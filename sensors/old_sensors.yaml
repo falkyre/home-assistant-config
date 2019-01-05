@@ -1,0 +1,55 @@
+sensor:
+  # Weather prediction
+  - platform: darksky
+    api_key: !secret darksy_api
+    forecast:
+      - 0
+    monitored_conditions:
+      - summary
+      - icon
+      - temperature
+      - dew_point
+      - apparent_temperature
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /config
+      - type: memory_use_percent
+      - type: network_in
+        arg: eth0
+      - type: network_out
+        arg: eth0
+      - type: processor_use
+      - type: last_boot
+  - platform: speedtest
+    monitored_conditions:
+      - ping
+      - download
+      - upload
+    minute:
+      - 0
+      - 15
+      - 30
+      - 45
+  - platform: mqtt
+    name: acurite5n1_winddir
+    state_topic: "home/Acurite_5n1_sensor/1104"
+    unit_of_measurement: "°"
+    value_template: "{{ value_json.wind_dir_deg }}"
+  - platform: mqtt
+    name: acurite5n1_temperature
+    state_topic: "home/Acurite_5n1_sensor/1104"
+    device_class: temperature
+    unit_of_measurement: "°C"
+    value_template: "{{ value_json.temperature_C }}"
+  - platform: mqtt
+    name: acurite5n1_humidity
+    state_topic: "home/Acurite_5n1_sensor/1104"
+    unit_of_measurement: "%"
+    device_class: humidity
+    value_template: "{{ value_json.humidity }}"
+  - platform: mqtt
+    name: acurite5n1_windspeed
+    state_topic: "home/Acurite_5n1_sensor/1104"
+    unit_of_measurement: "kph"
+    value_template: "{{ value_json.wind_speed_kph }}"
